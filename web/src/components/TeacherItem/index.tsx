@@ -1,36 +1,54 @@
 import React from 'react';
 
+import api from '../../services/api';
 import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
+
 import './styles.css';
 
-function TeacherItem() {
+export interface ITeacher {
+  id: number;
+  name: string;
+  avatar: string;
+  whatsapp: string;
+  bio: string;
+  subject: string;
+  cost: number;
+}
+
+interface ITeacherItemProps {
+  data: ITeacher;
+}
+
+const TeacherItem: React.FC<ITeacherItemProps> = (props) => {
+  function createNewConnection() {
+    api.post('/connections', { user_id: props.data.id });
+  }
+
   return (
     <article className="teacher-item">
       <header>
-        <img
-          src="https://avatars1.githubusercontent.com/u/31486585?s=460&u=315d5672f1ac480fbd13f24d034c90323895d082&v=4"
-          alt="Augusto Lima">
-        </img>
+        <img src={props.data.avatar} alt={props.data.name} />
         <div>
-          <strong>Augusto Lima</strong>
-          <span>Introdução a Banco de Dados</span>
+          <strong>{props.data.name}</strong>
+          <span>{props.data.subject}</span>
         </div>
       </header>
 
-      <p>
-      jasdjaskdjaskjdkasjkdjaksjdkasjkdjaskdjkasjdka
-      bdasjdhasdjkasjdkjaskdjkasjdkasjdkjaskdjkasjdk  
-      </p>
+      <p>{ props.data.bio }</p>
 
       <footer>
         <p>
           Preço/hora
-          <strong>R$ 100,00</strong>
+          <strong>R$ {props.data.cost}</strong>
         </p>
-        <button>
+        <a 
+          target="_blank"
+          onClick={createNewConnection}
+          href={`https://wa.me?${props.data.whatsapp}`}
+        >
           <img src={whatsappIcon} alt="Whatsapp"></img>
           Entrar em Contato
-        </button>
+        </a>
       </footer>
     </article>
   );
