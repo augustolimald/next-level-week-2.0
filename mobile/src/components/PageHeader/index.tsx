@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { View, Image, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import logoImg from '../../assets/images/logo.png';
 import backIcon from '../../assets/images/icons/back.png';
 
 import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
 
 interface IPageHeaderProps {
   title: string;
+  headerRight?: ReactNode;
 }
 
 const PageHeader: React.FC<IPageHeaderProps> = (props) => {
@@ -29,7 +30,12 @@ const PageHeader: React.FC<IPageHeaderProps> = (props) => {
         <Image source={logoImg} resizeMode="contain"/>
       </View>
 
-      <Text style={styles.title}>{props.title}</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>{props.title}</Text>
+        {props.headerRight}
+      </View>
+
+      {props.children}
     </View>
   );
 }
